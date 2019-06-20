@@ -1,0 +1,98 @@
+\section{2章 確率分布}
+
+\subsection{条件付きガウス分布の平均と分散の導出[2.3.1]}
+
+ガウス分布$N(\bm{x}|\bm{\mu}, \bm{\Sigma)}$に従う$D$次元のデータがあると過程して, そのうちの$M$個の要素がわかっている時, 他の要素はどのような値をどのような確率でとるのかを考えたい. つまり条件付き確率を考えたいのである. この条件付き確率もガウス分布となる.
+
+まず, わかっている$M$個の次元とそれ以外の次元にデータを分ける. 以下のように書ける.
+\begin{equation}
+    \bm{x} = 
+    \begin{pmatrix}
+        \bm{x}_a \\
+        \bm{x}_b
+    \end{pmatrix} \nonumber
+\end{equation}
+
+分けた次元に対応した平均$\mu$, 共分散行列$\Sigma$, 精度行列$\Lambda$は以下のように書ける.
+
+\begin{equation}
+    \bm{\mu} = 
+    \begin{pmatrix}
+        \bm{\mu}_a \\
+        \bm{\mu}_b
+    \end{pmatrix},
+    \bm{\Sigma} = 
+    \begin{pmatrix}
+        \bm{\Sigma}_{aa} & \bm{\Sigma}_{ab} \\
+        \bm{\Sigma}_{ba} & \bm{\Sigma}_{bb}
+    \end{pmatrix},
+    \bm{\Sigma}^{-1} = \bm{\Lambda} = 
+    \begin{pmatrix}
+        \bm{\Lambda}_{aa} & \bm{\Lambda}_{ab} \\
+        \bm{\Lambda}_{ba} & \bm{\Lambda}_{bb}
+    \end{pmatrix} \nonumber
+\end{equation}
+
+やりたいことは上記の定数を使って条件付き確率$p(\bm{x}_a | \bm{x}_b)) \sim N(\bm{x}_a| \bm{\mu}_{a|b}, \bm{\Sigma}_{a|b} )$のパラメータ$\bm{\mu}_{a|b}, \bm{\Sigma}_{a|b}$を表すこと.
+
+ところで, 本章でも書かれていた通り, ガウス分布には指数部分を平方完成するとうまく$\Sigma$と$\mu$を求めることができる性質がある.
+
+一般的なガウス分布の指数部分は以下のように平方完成できる. constは$\bm{x}$に関係のない項をまとめたものである. (教科書の式2.71の導出)
+
+\begin{eqnarray}
+    -\frac{1}{2}(\bm{x} - \bm{\mu})^{T}\bm{\Sigma}^{-1}(\bm{x} - \bm{\mu}) &=& -\frac{1}{2}(\bm{x}^{T}\bm{\Sigma}^{-1}\bm{x} - 2\bm{x}^{T}\bm{\Sigma}^{-1}\bm{\mu} + \bm{\mu}^{-1}\bm{\Sigma}^{-1}\bm{\mu}) \nonumber \\
+    &=& -\frac{1}{2}\bm{x}^{T}\bm{\Sigma}^{-1}\bm{x} + \bm{x}^{T}\bm{\Sigma}^{-1}\bm{\mu} + \bm{\mu}^{-1}\bm{\Sigma}^{-1}\bm{\mu} \nonumber \\
+    &=& -\frac{1}{2}\bm{x}^{T}\bm{\Sigma}^{-1}\bm{x} + \bm{x}^{T}\bm{\Sigma}^{-1}\bm{\mu} + const
+\end{eqnarray}
+
+これは以下の式(.3)の性質を知っているとわかりやすい. 後からいっぱい出てくるので絶対覚えておくこと. $\bm{a}$, $\bm{b}$は要素数$N$の列ベクトルであり, $\bm{A}$は$N \times M$の行列である.
+
+まず, 二次形式は以下のように表すことができる.
+
+\begin{eqnarray}
+    \bm{a}^T\bm{A}\bm{a} = \sum^{N}_{i}\sum^{M}_j A_{ij} \bm{a}_i \bm{a}_j
+\end{eqnarray}
+
+\newpage
+
+$\bm{a}$を$\bm{a} - \bm{b}$で置き換え, 式を変形していくと以下のようになる.
+
+\begin{eqnarray}
+    (\bm{a} - \bm{b})^T\bm{A}(\bm{a} - \bm{b}) &=& \sum^{N}_i\sum^{M}_j A_{ij}(\bm{a}_i - \bm{b}_i)(\bm{a}_j - \bm{b}_j) \nonumber \\
+    &=& \sum^{N}_i\sum^{M}_j A_{ij} (\bm{a}_i \bm{a}_j - \bm{a}_i \bm{b}_j - \bm{a}_j \bm{b}_i + \bm{b}_i \bm{b}_j) \nonumber \\
+    &=& \sum^{N}_i\sum^{M}_j A_{ij}\bm{a}_i\bm{a}_j - \sum^{N}_i\sum^{M}_j A_{ij}\bm{a}_i\bm{b}_j - \sum^{N}_i\sum^{M}_j\bm{a}_j\bm{b}_i A_{ij} + \sum^{N}_i\sum^{M}_j A_{ij} \bm{b}_i\bm{b}_j \nonumber \\
+    &=& \bm{a}^T\bm{A}\bm{a} - \bm{a}^T\bm{A}\bm{b} - \bm{b}^T\bm{A}\bm{a} + \bm{b}^T\bm{A}\bm{b} \nonumber \\
+    &=& \bm{a}^T\bm{A}\bm{a} - 2\bm{a}^T\bm{A}\bm{b} + \bm{b}^T\bm{A}\bm{b}
+\end{eqnarray}
+
+式.1の第1項から$-\frac{1}{2}, \bm{x}^T, \bm{x}$をとり除けは分散行列の逆行列$\bm{\Sigma}^{-1}$が得られる. 第2項から$\bm{x}^T, \bm{\Sigma}^{-1}$を取り除くと平均$\bm{\mu}$が残る. この性質を覚えておく!!
+
+本題は, $\bm{x}_b$がわかっている時の$\bm{x}_a$の確率分布$p(\bm{x}_a | \bm{x}_b)$を分割した$\bm{\mu}_a$や$\bm{\Sigma}_{bb}$などを使って求めたいのであった.
+
+そのためにはまず, $p(\bm{x}) \sim N(\bm{x}|\bm{\mu}, \bm{\Sigma)}$を分割した値で書き下してみる(式.4).(教科書の式2.70)
+
+\begin{eqnarray}
+    &-\frac{1}{2}(\bm{x} - \bm{\mu})^{-1}\bm{\Sigma}^{-1}(\bm{x} - \bm{\mu}) =& \nonumber \\ 
+    &-\frac{1}{2}(\bm{x}_{a} - \bm{\mu}_{a})^{T}\bm{\Lambda}_{aa}(\bm{x}_{a} - \bm{\mu}_{a})& - \frac{1}{2}(\bm{x}_{a} - \bm{\mu}_{a})^{T}\bm{\Lambda}_{ab}(\bm{x}_{b} - \bm{\mu}_{b}) \nonumber \\
+    &-\frac{1}{2}(\bm{x}_{b} - \bm{\mu}_{b})^{T}\bm{\Lambda}_{ba}(\bm{x}_{a} - \bm{\mu}_{a})& - \frac{1}{2}(\bm{x}_{b} - \bm{\mu}_{b})^{T}\bm{\Lambda}_{bb}(\bm{x}_{b} - \bm{\mu}_{b})
+\end{eqnarray}
+
+いま, $\bm{x}_b$は分かっている状態(定数)なので, 唯一の確率変数である$\bm{x}_a$について平方完成してそれ以外をconstにまとめる. 式.4で展開した式の各項に式.3で示した変形を適用すれば簡単に整理できる.(式.5)(教科書の式2.72および式2.74)
+
+\begin{eqnarray}
+    {式}.4 &=& -\frac{1}{2}\bm{x}_a^T\bm{\Lambda}_{aa}\bm{x}_a + \bm{x}_a^T(\bm{\Lambda}_{aa}\bm{\mu}_a - \bm{\Lambda}_{ab}(\bm{x}_b - \bm{\mu}_b)) + const
+\end{eqnarray}
+
+これはガウス分布の指数部分の形になるので, 第1項から(教科書の式2.73)
+
+$$ \bm{\Sigma}_{a|b} = \bm{\Lambda}_{aa}^{-1} $$
+
+第2項から(教科書の式2.75)
+
+\begin{eqnarray}
+    \bm{\mu}_{a|b} &=& \bm{\Sigma}_{a|b}(\bm{\Lambda}_{aa}\bm{\mu}_a - \bm{\Lambda}_{ab}(\bm{x}_b - \bm{\mu}_b)) \nonumber \\
+    &=& \bm{\Lambda}_{aa}^{-1}(\bm{\Lambda}_{aa}\bm{\mu}_a - \bm{\Lambda}_{ab}(\bm{x}_b - \bm{\mu}_b)) \nonumber \\
+    &=& \bm{\mu}_a - \bm{\Lambda}_{aa}^{-1}\bm{\Lambda}_{ab}(\bm{x}_b - \bm{\mu}_b)) \nonumber
+\end{eqnarray}
+
+あとは$\bm{\Lambda}$の部分を$\bm{\Sigma}$で表したらどう表せるかという議論. 教科書読めばわかる.
