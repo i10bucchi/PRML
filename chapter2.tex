@@ -166,6 +166,120 @@ $$ Dir(\bm{\mu}|\bm{\alpha}) = \frac{\Gamma(\alpha_0)}{\Gamma(\alpha_1)....\Gamm
 
 \section{ガウス分布}
 
+ガウス分布は, 正規分布とも呼ばれ, 連続変数の分布のモデルとして多く利用される。
 
+変数が$x$の1つ場合のガウス分布, $\mu$は平均で$\sigma^{2}$は分散を表す.
+
+$$ N\left({x|\mu,\sigma^{2}}\right) = \frac{1}{\left(2\pi\sigma\right)^\frac{1}{2}}\exp^{\left\{{-\frac{1}{2\sigma^{2}}\left(x-\mu\right)^{2}}\right\}} $$
+
+$\bm{D}$次元ベクトル$x$に対するガウス分布, $\mu$は平均ベクトル, $\Sigma$は共分散行列を表す.
+
+$$ N\left(\bm{x|\mu,\Sigma}\right) = \frac{1}{\left(2\pi\right)^\frac{\bm{D}}{2}}\frac{1}{\left|\Sigma\right|^\frac{1}{2}}\exp^{\left\{{-\frac{1}{2}\left(\bm{x}-\bm{\mu}\right)^{T}\Sigma^{-1}\left(\bm{x}-\bm{\mu}\right)}\right\}} $$
+
+ガウス分布が使われる場面の例として,以下がある.
+\begin{itemize}
+  \item 変数が1つのときのに, エントロピーを最大化する分布
+  \item 確率変数の和における変数数が増えるに従って近づく分布(中心極限定理)
+  \item ガウス分布を用いたマルコフ確率場
+  \item 時系列データのモデル化に用いられる線形動的システム
+\end{itemize}
+
+　ガウス分布は, 指数部分に現れる二次形式$ \triangle^2 = {\left\{{\left(\bm{x}-\bm{\mu}\right)^{T}\Sigma^{-1}\left(\bm{x}-\bm{\mu}\right)}\right\}} $に依存する. この部分が定数の時, ガウス分布の密度が一定になる.
+係数部分はガウス分布を正規化するもの.
+
+　多変量ガウス分布をD個の独立な1変数ガウス分布の積で表すことが出来る.
+
+　ガウス分布のパラメータの総数はDに対して2乗の割合で増加し, 計算が困難になりえる. 対処法の1つは, 共分散行列を対角化するなどで形式に制限を加えることである. また, ガウス分布は極大値が1つという特徴があるため, 適切に分布を表現できない際に, 洗剤変数を導入する場合がある. 例として, ガウス混合分布などがある.
+
+\subsection{条件付きガウス分布}
+　多変量ガウス分布の重要な特性として, 2つの変数集合の同時分布がガウス分布に従うなら, 一方の変数集合が与えられたときの, もう一方の集合の条件付き分布もガウス分布になる. さらに, どちらの変数集合の周辺分布も同様にガウス分布になる. 
+
+大まかな証明の流れを記述しておくので, 詳細は教科書を参照.
+
+基本的には, $\bm{x}$の二次の項の係数行列は逆共分散行列$\Sigma^{-1}$に等しく, 線形項の係数と$\Sigma^{-1}\mu$が等しいことを利用して, $\Sigma$と$\mu$が得られる. 
+
+これらの演算は, 平方完成と呼ばれるものの例となっており, ガウス分布についてはよく使われる技法である.
+
+ 二次形式とは, 二次の項のみからなる多項式であり, 変数行列$\bm{A}$と「変数を縦に並べたベクトル$\bm{x}$」を用いて, $\bm{x}^{T}\bm{A}\bm{x}$と表すことが出来る.
+
+\subsection{周辺ガウス分布}
+　同時分布$p(\bm{x}_{a}, \bm{x}_{b})$がガウス分布であれば, 条件付き分布$p(\bm{x}_{a}|\bm{x}_{b})$もガウス分布になることを示した. ここでは, 周辺分布
+$$ p(\bm{x}_{a}) = \int_p(\bm{x}_{a}, \bm{x}_{b})d\bm{x}_{b} $$ 
+であることを証明する.
+
+前項と同じほとんど同じ手順で証明する事ができる. 詳細は教科書を参照.
+\\
+
+分割されたガウス分布について, 以下にまとめる.
+
+$A = \Sigma$とした, 同時ガウス分布$ N(\bm{x}|\bm{\mu}, \bm{\Sigma}) $があるとする.
+
+$$ \bm{X} = \left(\begin{array}{c}\bm{x}_{a}\\ \bm{x}_{b}\end{array}\right), \bm{\mu} = \left(\begin{array}{c}\bm{\mu}_{a}\\ \bm{\mu}_{b}\end{array}\right)$$
+
+$$ \bm{\Sigma} = \left(\begin{array}{cc}\bm{\Sigma}_{aa} & \bm{\Sigma}_{ab}\\ \bm{\Sigma}_{ba} & \bm{\Sigma}_{bb}\end{array}\right), \bm{\Lambda} =  \left(\begin{array}{cc}\bm{\Lambda}_{aa} & \bm{\Lambda}_{ab}\\ \bm{\Lambda}_{ba} & \bm{\Lambda}_{bb}\end{array}\right)$$
+
+条件付き分布:
+
+$$ p(\bm{x}_{a}|\bm{x}_{b}) = \bm{N}(\bm{x}_{a}|\bm{\mu}_{a|b}, \bm{\Lambda}_{aa}^{-1})  $$
+$$ \bm{\mu}_{a|b} = \bm{\mu}_{a} - \bm{\Lambda}_{aa}^{-1} \bm{\Lambda}_{ab}(\bm{x}_{a} - \bm{\mu}_{b}) $$
+
+周辺分布:
+$$ p(\bm{x}_{a}) = \bm{N}(\bm{x}_{a}|\bm{\mu}_{a}, \bm{\Sigma}_{aa})  $$
+
+
+\subsection{ガウス変数に対するベイズの定理}
+ガウス分布$p(\bm{x})$と, $p(\bm{x})$が与えられたときの $p(\bm{y|x})$の条件付きガウス分布が次式で与えられたときの, $p(\bm{y})$と $p(\bm{x|y})$について考える.
+$$p(\bm{x}) = \bm{N}(\bm{x}|\bm{\mu}, \bm{\Lambda}^{-1})$$
+$$p(\bm{y|x}) = \bm{N}(\bm{x}|\bm{Ax}+\bm{b}, \bm{L}^{-1})$$
+が与えられた時
+$$p(\bm{y}) = \bm{N}(\bm{y}|\bm{A}\bm{\mu}+\bm{b}, \bm{L}^{-1}+\bm{\Lambda}\bm{\Lambda}^{-1}\bm{\Lambda}^{T})$$
+$$p(\bm{x|y}) = \bm{N}(\bm{x}|\bm{A}\bm{\mu}\left\{\bm{A}^{T}\bm{L}(\bm{y}-\bm{b})\right\} + \bm{\Lambda}\bm{\mu}, \bm{\Sigma})$$
+$$\bm{\Sigma} = ({\Lambda}+\bm{A}^{T}\bm{L}\bm{A})^{-1}$$
+
+\subsection{ガウス分布の最尤推定}
+多変量ガウス分布から、観測値$\bm{x_n}$が独立に得られたと仮定したデータ集合$\bm{X}$があるとき、最尤推定法によって分布を求める。
+
+対数尤度関数は
+$$ \ln p(\bm{X}|\bm{\mu}, \bm{\Sigma}) =  -\frac{\bm{ND}}{2}\ln(2\pi)-\frac{1}{2}\sum_{n=1}^N(\bm{x_n}-\bm{\mu})^{T}\Sigma ^{-1}(\bm{x_n}-\bm{\mu})$$
+
+十分統計量は
+
+$$ \sum_{n=1}^N\bm{x_n},  \sum_{n=1}^N\bm{x_n}\bm{x_n}^{T} $$
+
+対数尤度の$\mu$についての導関数を考えると
+
+$$ \frac{\partial}{\partial \mu}\ln p(\bm{X}|\bm{\mu}, \bm{\Sigma}) = \sum_{n=1}^N\Sigma ^{-1}(\bm{x_n}-\bm{\mu})$$
+
+となり、この導関数を0とおくと、最尤推定による平均についての解が得られる。
+
+$$ \bm{\mu_{ML}} = \frac{1}{\bm{N}}$$
+\subsection{逐次推定}
+ガウス分布のパラメータの最尤推定解についての議論を基に、最尤推定での逐次推定という一般的な議論に展開する。
+
+平均の最尤推定量$\bm{\mu_{ML}} $に対して、最後のデータ点$\bm{X_N}$がどれくらい影響したかを指揮に表すと
+
+$$ \bm{\mu_{ML}} = \bm{\mu_{ML}}^{(\bm{M}-1)} + \frac{1}{N}(\bm{X_N}-\bm{\mu_{ML}}^{(\bm{M}-1)})$$
+
+これは、新しいデータ店を観測すると$\frac{1}{N}$に比例する小さな量だけ、誤差信号の方へ、古い推定量を移動させて、$\bm{\mu_{ML}}$を修正したと解釈できる
+
+上式を利用した逐次アルゴリズムで導出することは、いつもできるわけではなく、
+
+より汎用的な逐次学習の定式化が必要なため、Robbins-Menroアルゴリズムが使用される。
+
+同時分布$\bm{p}(\bm{z}, \bm{\theta})$いしたがくｋアク率変数$\bm{\theta}$と$\bm{z}$の対を考える。$\bm{\theta}$が与えられたときの$\bm{z}$の条件付き期待値によって、決定論的な関数$f(\bm{\theta})$を定義する。
+
+$$ f(\bm{\theta}) = E[\bm{z}|\bm{\theta}] = \int zp(\bm{z}|\bm{\theta})dz $$
+
+このように定義された関数を回帰関数という。
+
+いくつかの仮定(教科書参照)のもと、Robbins-Menroの手続きでは、$f(\bm{\theta})=0$となる点の連続的推定の系列を、次のように定義する。
+
+$$ \bm{\theta}^{(N)} = \bm{\theta}^{(N-1)} - a_{N-1}\bm{z}(\bm{\theta}^{(N-1)})$$
+
+$\bm{z}(\bm{\theta}^{(N)})$は$\bm{\theta}$が$\bm{\theta}^{N}$を取るときに観測される$\bm{z}$の値で、係数$a_{\bm{N}}$は、以下の条件を満たす整数の系列である。
+
+$$\lim_{N \rightarrow \infty}a_{\bm{N}} = 0$$
+$$ \sum_{N=1}^\infty a_{\bm{N}} = \infty $$
+$$ \sum_{N=1}^\infty a^{2}_{\bm{N}} < \infty $$
 
 \newpage
